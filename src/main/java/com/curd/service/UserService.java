@@ -3,11 +3,10 @@ package com.curd.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import com.curd.enums.Roles;
 import com.curd.model.entity.Users;
 import com.curd.model.request.UserRequest;
 import com.curd.model.response.UserDto;
@@ -36,6 +35,7 @@ public class UserService {
 				.password(bCryptPasswordEncoder.encode(request.getPassword()))
 				.name(request.getName())
 				.phone(request.getPhone())
+				.roles(request.getRoles()!=null?request.getRoles():Roles.USER)
 				.build();
 	}
 

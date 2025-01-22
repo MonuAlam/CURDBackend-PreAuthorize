@@ -13,6 +13,7 @@ public static UserDto toResponseDto(Users user) {
 				.name(user.getName())
 				.phone(user.getPhone())
 				.password(user.getPassword())
+				.roles(user.getRoles())
 				.build();
 	}
 }

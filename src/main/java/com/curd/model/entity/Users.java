@@ -1,18 +1,19 @@
 package com.curd.model.entity;
 
-import java.util.List;
+
+
+import com.curd.enums.Roles;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @AllArgsConstructor
@@ -20,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder(toBuilder = true)
-@Table(name ="users")
+@ToString
 public class Users {
 
 	@Id
@@ -31,6 +32,7 @@ public class Users {
 	private String password;
 	private String name;
 	private String phone;
+	private Roles roles;
 	
 //	@OneToMany(mappedBy = "users")
 //	private List<Notes> notes;
