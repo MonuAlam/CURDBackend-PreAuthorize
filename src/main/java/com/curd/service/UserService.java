@@ -23,6 +23,13 @@ public class UserService {
 	private PasswordEncoder bCryptPasswordEncoder;
 
 	public UserDto registerUser(UserRequest request) {
+		
+		Users existingUsers =userRepository.findByEmail(request.getEmail());
+				
+		if (existingUsers!=null) {
+			throw new RuntimeException("Please use different email id");
+		}
+		
 		Users user = toEntity(request);
 		
 		return UserDtoMapper.toResponseDto(userRepository.save(user));

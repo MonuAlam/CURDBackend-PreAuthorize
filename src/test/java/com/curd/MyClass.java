@@ -17,16 +17,15 @@ import jakarta.validation.constraints.AssertTrue;
 
 @SpringBootTest
 public class MyClass {
+	
 	@Autowired
 	NotesController controller;
-	@Autowired
-	MockMvc dataMockMvc;
+
 	@Test
 	public void ShouldUserExist(){
 		
 		List dataList=controller.getAllNotes();
 		
-		//dataMockMvc.perform(null)
 		assertTrue(dataList.size()>0);
 		assertFalse(dataList.isEmpty());
 	}

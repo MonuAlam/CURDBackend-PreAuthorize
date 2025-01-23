@@ -33,7 +33,7 @@ public class SecurityConfig {
 			AuthenticationEntryPoint jwtAuthentication) throws Exception {
 
 		httpSecurity.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/login")
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/login","/user/register")
 						.permitAll().anyRequest()
 						.authenticated())
 				.httpBasic(httpBasic -> httpBasic.disable())

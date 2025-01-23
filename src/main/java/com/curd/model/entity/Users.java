@@ -5,6 +5,8 @@ package com.curd.model.entity;
 import com.curd.enums.Roles;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -32,6 +34,8 @@ public class Users {
 	private String password;
 	private String name;
 	private String phone;
+	
+	@Enumerated(EnumType.STRING)
 	private Roles roles;
 	
 //	@OneToMany(mappedBy = "users")
