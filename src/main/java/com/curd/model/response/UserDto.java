@@ -1,7 +1,8 @@
 package com.curd.model.response;
 
-import com.curd.enums.Roles;
+import java.util.Set;
 
+import com.curd.model.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,5 +21,5 @@ public class UserDto {
 	private String password;
 	private String name;
 	private String phone;
-	private Roles roles;
+	private Set<Role> roles;
 }

@@ -27,15 +27,17 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtFilter jwtFilter;
-	
+
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity,
 			AuthenticationEntryPoint jwtAuthentication) throws Exception {
 
 		httpSecurity.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/login","/user/register")
-						.permitAll().anyRequest()
-						.authenticated())
+				.authorizeHttpRequests(auth -> auth.requestMatchers("/login", "/user/register").permitAll() 
+																											
+						.requestMatchers("/adminapi/admin", "/user").hasRole("ADMIN") 
+						.requestMatchers("/adminapi/users").hasRole("USER") 
+						.anyRequest().authenticated())
 				.httpBasic(httpBasic -> httpBasic.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -44,8 +46,8 @@ public class SecurityConfig {
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthentication));
 
 		return httpSecurity.build();
-	}	
-		
+	}
+
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 

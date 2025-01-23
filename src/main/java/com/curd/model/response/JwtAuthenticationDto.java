@@ -1,7 +1,7 @@
 package com.curd.model.response;
 
-import com.curd.enums.Roles;
-
+import java.util.Set;
+import com.curd.model.entity.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,5 +15,5 @@ public class JwtAuthenticationDto {
 	private Boolean success;
 	private String jwtToken;
 	private String message;  
-	private Roles roles;
+	private Set<Role> roles;
 }

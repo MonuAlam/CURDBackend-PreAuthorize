@@ -2,6 +2,7 @@ package com.curd.model.entity;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,11 +19,13 @@ public class UserPrincipal implements UserDetails {
 		this.user = user;
 	}
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
+	 @Override
+	    public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		return Collections.singleton(new SimpleGrantedAuthority("USER"));
-	}
+	        return user.getRoles().stream()
+	                   .map(role -> new SimpleGrantedAuthority(role.getName()))
+	                   .collect(Collectors.toList());
+	    }
 	
 	@Override
 	public String getPassword() {
@@ -34,4 +37,24 @@ public class UserPrincipal implements UserDetails {
 		return user.getEmail();
 	}
 
+	
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Can implement custom logic
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Can implement custom logic
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Can implement custom logic
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // Can implement custom logic
+    }
 }

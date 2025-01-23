@@ -1,6 +1,7 @@
 package com.curd.model.request;
 
-import com.curd.enums.Roles;
+import java.util.Set;
+import com.curd.model.entity.Role;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,5 +14,5 @@ public class UserRequest {
 	private String password;
 	private String name;
 	private String phone;
-	private Roles roles;
+	private Set<Role> roles;
 }
