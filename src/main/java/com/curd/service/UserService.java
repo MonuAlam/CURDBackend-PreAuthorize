@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.curd.enums.Roles;
+import com.curd.enums.UsersRoles;
 import com.curd.model.entity.Role;
 import com.curd.model.entity.Users;
 import com.curd.model.request.UserRequest;
@@ -61,10 +61,10 @@ public class UserService {
 	        }
 	    } else {
 	        // Assign default role if no roles are provided
-	        Role defaultRole = roleRepository.findByName(Roles.ROLE_USER.name());
+	        Role defaultRole = roleRepository.findByName(UsersRoles.ROLE_USER.name());
 	        if (defaultRole == null) {
 	            // If the default role doesn't exist, create and save it
-	            defaultRole = new Role(null, Roles.ROLE_USER.name());
+	            defaultRole = new Role(null, UsersRoles.ROLE_USER.name());
 	            roleRepository.save(defaultRole);
 	        }
 	        roles.add(defaultRole);

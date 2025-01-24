@@ -21,9 +21,9 @@ import lombok.ToString;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
-    private String name;  // e.g., "USER", "ADMIN"
+    private String name;  
 
 
 }

@@ -41,18 +41,18 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		}
 
-		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {//check if user is not already authenticated
 			UserDetails userDetails = 
 					context.getBean(CustomUserDetailsService.class)
 					.loadUserByUsername(username);
 
-			if (jwtService.validateToken(token, userDetails)) {
+			if (jwtService.validateToken(token, userDetails)) {//validate token like expiration time and signature etc.
 
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
-						null, userDetails.getAuthorities());
+						null, userDetails.getAuthorities());// This adds request-specific details (such as the remote address and session ID) to the authentication token.
 				
 				authToken.setDetails(new WebAuthenticationDetailsSource()
-						.buildDetails(request));
+						.buildDetails(request));//This sets the Authentication object in the SecurityContextHolder, effectively authenticating the user for the current request.
 				
 				SecurityContextHolder.getContext()
 				.setAuthentication(authToken);
@@ -60,7 +60,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		}
 
-		filterChain.doFilter(request, response);
+		filterChain.doFilter(request, response); //After the authentication process, the filter chain is continued by calling doFilter() on the next filter in the chain (or the main controller if no other filters exist).
 	}
 	
 }

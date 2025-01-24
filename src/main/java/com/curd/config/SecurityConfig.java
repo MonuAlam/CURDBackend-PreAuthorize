@@ -40,7 +40,7 @@ public class SecurityConfig {
 						.anyRequest().authenticated())
 				.httpBasic(httpBasic -> httpBasic.disable())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); //before validating username and pass from db validate JWT token first
 
 		httpSecurity.securityContext(securityContext -> securityContext.requireExplicitSave(false))
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthentication));
