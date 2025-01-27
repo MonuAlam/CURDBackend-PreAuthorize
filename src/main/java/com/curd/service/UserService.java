@@ -43,34 +43,34 @@ public class UserService {
 	}
 
 
-	
 	public Users toEntity(UserRequest request) {
+		
 	    Set<Role> roles = new HashSet<>();
 
-	    // If roles are provided in the request
+
 	    if (request.getRoles() != null && !request.getRoles().isEmpty()) {
 	        for (Role role : request.getRoles()) {
-	            // Try to fetch the role from the database
+
 	            Role roleEntity = roleRepository.findByName(role.getName());
 	            if (roleEntity == null) {
-	                // If role doesn't exist, create and save it
+
 	                roleEntity = new Role(null, role.getName());
 	                roleRepository.save(roleEntity);
 	            }
 	            roles.add(roleEntity);
 	        }
 	    } else {
-	        // Assign default role if no roles are provided
+
 	        Role defaultRole = roleRepository.findByName(UsersRoles.ROLE_USER.name());
 	        if (defaultRole == null) {
-	            // If the default role doesn't exist, create and save it
+
 	            defaultRole = new Role(null, UsersRoles.ROLE_USER.name());
 	            roleRepository.save(defaultRole);
 	        }
 	        roles.add(defaultRole);
 	    }
 
-	    // Create and return the Users entity
+
 	    return Users.builder()
 	            .email(request.getEmail())
 	            .password(bCryptPasswordEncoder.encode(request.getPassword()))

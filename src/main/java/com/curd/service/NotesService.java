@@ -2,11 +2,11 @@ package com.curd.service;
 
 import java.time.LocalDate;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-
 import com.curd.model.entity.Notes;
+import com.curd.model.entity.UserPrincipal;
 import com.curd.model.entity.Users;
 import com.curd.model.request.NotesRequest;
 import com.curd.model.response.NotesDto;
@@ -23,20 +23,23 @@ public class NotesService {
 	@Autowired
 	private UserRepository userRepository;
 
-	public NotesDto createNotes(Integer userId, NotesRequest request) {
+	public NotesDto createNotes(NotesRequest request) {
 
-		Users user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not exist"));
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		Notes notes = toEntity(user, request);
+        Users user = userRepository.findByEmail(userPrincipal.getUsername());
+
+		
+		Notes notes = toEntity( user,request);
 
 		return NotesDtoMapper.toResponseDto(notesRepository.save(notes));
 	}
 
-	private Notes toEntity(Users user, NotesRequest request) {
+	private Notes toEntity(Users users, NotesRequest request) {
 
 		return Notes.builder().title(request.getTitle()).description(request.getDescription())
 				.addedDate(LocalDate.now()).updatedDate(LocalDate.now())
-				.user(user)
+				.user(users)
 				.build();
 
 	}
@@ -54,22 +57,32 @@ public class NotesService {
 		return NotesDtoMapper.toResponseDto(notes);
 	}
 
-	public NotesDto updateNotes(Integer id, NotesRequest request) {
 
-		Notes notes = notesRepository.findById(id)
-				.orElseThrow(() -> new RuntimeException("Notes not exist for id" + id));
+    public NotesDto updateNotes(Integer id, NotesRequest request) {
 
-		Notes updatedNotes = updateWithBuilder(notes, request);
+        UserPrincipal userPrincipal = (UserPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-		return NotesDtoMapper.toResponseDto(notesRepository.save(updatedNotes));
-	}
 
-	private Notes updateWithBuilder(Notes notes, NotesRequest request) {
+        Users user = userRepository.findByEmail(userPrincipal.getUsername());
 
-		return notes.toBuilder().title(request.getTitle()).description(request.getDescription())
-				.updatedDate(LocalDate.now()).build();
 
-	}
+        Notes notes = notesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Notes not found for id " + id));
+
+        Notes updatedNotes = updateWithBuilder(notes, request, user);
+
+
+        return NotesDtoMapper.toResponseDto(notesRepository.save(updatedNotes));
+    }
+
+    private Notes updateWithBuilder(Notes notes, NotesRequest request, Users user) {
+        return notes.toBuilder()
+                .title(request.getTitle())
+                .description(request.getDescription())
+                .updatedDate(LocalDate.now())
+                .user(user)  
+                .build();
+    }
 
 	public NotesDto deleteById(Integer id) {
 
@@ -80,9 +93,5 @@ public class NotesService {
 
 		return NotesDtoMapper.toResponseDto(notes);
 	}
-	
 
-    public List<NotesDto> getNotesByUserEmail(Integer id) {
-        return notesRepository.findByUserId(id);
-    }
 }

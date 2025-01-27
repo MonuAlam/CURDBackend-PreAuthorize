@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.curd.model.request.NotesRequest;
 import com.curd.model.response.NotesDto;
 import com.curd.service.NotesService;
@@ -25,9 +23,9 @@ public class NotesController {
 	private NotesService notesService;
 
 	@PostMapping
-	public NotesDto createNotes(@RequestParam Integer userId,@RequestBody NotesRequest request) {
+	public NotesDto createNotes(@RequestBody NotesRequest request) {
 
-		return notesService.createNotes(userId,request);
+		return notesService.createNotes(request);
 	}
 
 	@GetMapping
@@ -52,10 +50,6 @@ public class NotesController {
 	public NotesDto deleteById(@PathVariable Integer id) {
 
 		return notesService.deleteById(id);
-	}
-	
-    @GetMapping("/user/{userId}")
-    public List<NotesDto> getNotesByUser(@PathVariable Integer userId) {
-        return notesService.getNotesByUserEmail(userId);
-    }
+	} 
+
 }
